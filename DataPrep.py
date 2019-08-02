@@ -42,20 +42,3 @@ def formatDataFrame(df):
     df = df.apply(pd.to_numeric)
 
     return df
-
-
-def main():
-    """
-    Main Function.
-
-    :return:
-    """
-    df = createDataFrame()
-    df = formatDataFrame(df)
-
-    # print average accross all days
-    print(df.mean().mean())
-
-
-if __name__ == '__main__':
-    main()
