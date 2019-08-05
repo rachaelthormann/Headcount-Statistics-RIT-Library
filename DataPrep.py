@@ -2,7 +2,7 @@
 Author: Rachael Thormann
 Python Version: 3.6
 File Name: DataPrep.py
-Last Edited: 8/1/2019
+Last Edited: 8/4/2019
 File Purpose: To prep the data so that it can be efficiently processed and visualized.
 """
 
@@ -42,3 +42,17 @@ def formatDataFrame(df):
     df = df.apply(pd.to_numeric)
 
     return df
+
+
+def transposeDataFrame(df):
+    """
+    Transpose the dataframe so that the dates can be used as the index.
+
+    :return:
+    """
+    # transpose so that date is functioning as index
+    dfT = df.T
+    # convert index to datetime
+    dfT.index = pd.to_datetime(dfT.index)
+
+    return dfT
