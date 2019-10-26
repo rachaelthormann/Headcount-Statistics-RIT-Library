@@ -8,6 +8,7 @@ File Purpose: To process data and produce statistics.
 
 import pandas as pd
 import numpy as np
+import datetime as dt
 from DataPrep import *
 
 
@@ -21,6 +22,7 @@ def printStatistics(df):
     getMax(df)
     getMin(df)
     averageByMonth(df)
+    averageByWeek(df)
 
 
 def overallAverage(df):
@@ -30,7 +32,7 @@ def overallAverage(df):
     :return:
     """
     # print average across all days
-    print(df.mean().mean())
+    print(df.max(0).mean())
 
     print("\n")
 
@@ -42,8 +44,8 @@ def getMax(df):
     :return:
     """
     # print day that has the maximum average
-    print(df.mean().idxmax())
-    print(df.mean().max())
+    print(df.max(0).idxmax())
+    print(df.max(0).max())
 
     print("\n")
 
@@ -55,8 +57,8 @@ def getMin(df):
     :return:
     """
     # print the day that has the minimum average
-    print(df.mean().idxmin())
-    print(df.mean().min())
+    print(df.max(0).idxmin())
+    print(df.max(0).min())
 
 
 def averageByMonth(df):
@@ -67,6 +69,8 @@ def averageByMonth(df):
     """
     # transpose so that date is functioning as index
     dfT = transposeDataFrame(df)
+
+    dfT = dfT.max(1)
 
     print("\n")
 
@@ -79,23 +83,27 @@ def averageByMonth(df):
         month_counter += 1
 
 
-"""
-def averageByWeek():
+
+def averageByWeek(df):
 
     # transpose so that date is functioning as index
-    dfT = transposeDataFrame()
+    dfT = transposeDataFrame(df)
 
-    print("\n")
+    dfT = dfT.max(1)
 
-    months = dfT.groupby(pd.Grouper(freq="W")).mean().index
-    print(months.key)
-    month_counter = 0
+    print('\n')
 
-    # print each month with its associated average
-    for x in dfT.groupby(pd.Grouper(freq="M")).mean().values:
-        print(str(months[month_counter].strftime('%B %Y')) + ":  " + str(np.nanmean(x).round(2)))
-        month_counter += 1
-"""
+    dfT.index = pd.to_datetime(dfT.index)
+
+    avgByWeek = dfT.groupby(dfT.index.to_period('W-SAT')).mean()
+
+    print(avgByWeek.round(2))
+
+    print('\n')
+
+    print(avgByWeek[avgByWeek > 1000].mean())
+
+
 
 
 
