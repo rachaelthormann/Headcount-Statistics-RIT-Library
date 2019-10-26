@@ -39,6 +39,7 @@ def formatDataFrame(df):
     # convert columns to integers and replace missing values with NA
     df = df.replace("Missed", np.nan)
     df = df.replace('0', np.nan)
+    df = df.replace(31637, np.nan)
     df = df.apply(pd.to_numeric)
 
     return df
